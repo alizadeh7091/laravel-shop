@@ -62,7 +62,7 @@
             background-color: #218838;
         }
 
-        .cart-button {
+        .pay-button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -76,13 +76,43 @@
             text-align: center;
         }
 
-        .cart-button:hover {
+        .pay-button:hover {
             background-color: #0056b3;
         }
 
         a {
             text-decoration: none;
             color: white;
+        }
+
+        .discount-container {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .discount-input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 70%;
+            margin-right: 10px;
+        }
+
+        .discount-button {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .discount-button:hover {
+            background-color: #e0a800;
         }
 
     </style>
@@ -122,6 +152,41 @@
         </tbody>
     </table>
 </div>
-<button class="cart-button"><a href="">pay</a></button>
+
+<div class="discount-container">
+    <form id="form" method="post">
+        @csrf
+        <input type="text" name="discount_code" class="discount-input" placeholder="Enter discount code">
+        <button type="submit" class="discount-button">Apply</button>
+    </form>
+</div>
+
+<form action="{{route('add.order')}}" method="post">
+    @csrf
+    <button class="pay-button">pay</button>
+</form>
+<script !src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#form').on('submit', function(e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('apply.discount') }}",
+                method: "POST",
+                data: $(this).serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    $('#response').html('<p>' + response.message + '</p>');
+                },
+                error: function(xhr) {
+                    $('#response').html('<p>An error occurred: ' + xhr.responseText + '</p>');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Cart_detail;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Cart_detailController extends Controller
 {
@@ -31,7 +32,8 @@ class Cart_detailController extends Controller
 
     public function allCartItems()
     {
-        $user_id = 1;
+
+        $user_id = Auth::user()->id;
         $cart = Cart::where('user_id', $user_id)->get();
 //        dd($cart);
         foreach ($cart as $item) {

@@ -95,7 +95,7 @@
             <th>name</th>
             <th>price</th>
             <th>stock</th>
-            <th>image</th>
+{{--            <th>image</th>--}}
             <th>quantity</th>
 {{--            <th>action</th>--}}
         </tr>
@@ -106,7 +106,7 @@
                 <td>{{$_product->name}}</td>
                 <td>{{$_product->price}}</td>
                 <td>{{$_product->quantity}}</td>
-                <td>{{$_product->image}}</td>
+{{--                <td>{{$_product->image}}</td>--}}
                 <td>
                     <form action="{{route('add.cart',$_product->id)}}" method="post">
                         @csrf
@@ -120,6 +120,6 @@
         </tbody>
     </table>
 </div>
-<button class="cart-button"><a href="">show cart</a></button>
+<button class="cart-button"><a href="{{route('all.cart.items')}}">show cart</a></button>
 </body>
 </html>
