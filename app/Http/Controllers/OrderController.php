@@ -6,12 +6,13 @@ use App\Models\Cart;
 use App\Models\Cart_detail;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
-
+use App\Helpers\helpers;
 class OrderController extends Controller
 {
     public function addOrder()
     {
-        $user_id = Auth::user()->id;
+//        dd(getUserId());
+        $user_id = getUserId();
         $cart = Cart::query()->where('user_id', $user_id)->first();
         $total_invoice = $cart->total_invoice;
         $total_invoice_discounted = $cart->total_invoice_discounted;
@@ -38,5 +39,6 @@ class OrderController extends Controller
             $_cart_detail->delete();
         }
         $cart->delete();
+        return redirect()->route('all.products');
     }
 }
