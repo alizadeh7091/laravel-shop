@@ -22,20 +22,26 @@ class CartController extends Controller
                 $cart = Cart::query()->create(
                     [
                         'user_id' => $userId,
-                        'discount' => 5,
+                        'discount' => 0,
                         'total_invoice' => null,
+                        'total_invoice_discounted' => null,
                     ]
                 );
             }
             $cart_detail = new Cart_detailController();
             $cart_detail->createCart_details($request, $id, $cart);
             return redirect()->back();
-        } else {
-            $product = Product::findOrFail($id);
-//            dd($product);
-            $product_id = $product->id;
-
         }
-
+//        else {
+//            $product = Product::findOrFail($id);
+////            dd($product);
+//            $product_id = $product->id;
+//        }
     }
+//    public function updateCart($id,$column){
+//        $cart = Cart::query()->findOrFail($id);
+//        $discount_code = $request->input('discount_code');
+//        $attr = ['discount'=>$discount_code];
+//        $cart->update($attr);
+//    }
 }

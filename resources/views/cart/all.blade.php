@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>products</title>
     <style>
         body {
@@ -145,11 +146,17 @@
                 </td>
             </tr>
         @endforeach
+        </tbody>
+        <tfoot>
         <tr>
             <td colspan="3" style="text-align: right; font-weight: bold;">Total:</td>
             <td>{{ $total_price_sum }}</td>
         </tr>
-        </tbody>
+        <tr>
+            <td colspan="3" style="text-align: right; font-weight: bold;">Total with discount:</td>
+            <td id="total_with_discount"></td>
+        </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -159,17 +166,17 @@
         <input type="text" name="discount_code" class="discount-input" placeholder="Enter discount code">
         <button type="submit" class="discount-button">Apply</button>
     </form>
+    <div id="response"></div>
 </div>
 
 <form action="{{route('add.order')}}" method="post">
     @csrf
     <button class="pay-button">pay</button>
 </form>
-<script !src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#form').on('submit', function(e) {
-
+    $(document).ready(function () {
+        $('#form').on('submit', function (e) {
             e.preventDefault();
             $.ajax({
                 url: "{{ route('apply.discount') }}",
@@ -178,10 +185,12 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function(response) {
+                success: function (response) {
+                    // console.log(response);
                     $('#response').html('<p>' + response.message + '</p>');
+                    $('#total_with_discount').text(response.total_with_discount);
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     $('#response').html('<p>An error occurred: ' + xhr.responseText + '</p>');
                 }
             });
