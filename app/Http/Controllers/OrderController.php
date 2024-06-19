@@ -16,10 +16,7 @@ class OrderController extends Controller
         $cart = Cart::query()->where('user_id', $user_id)->first();
         $total_invoice = $cart->total_invoice;
         $total_invoice_discounted = $cart->total_invoice_discounted;
-//        $total_invoice_discounted = $cart->to
-//        dd($total_invoice);
-//        $order = Order::where('user_id', $user_id)->first();
-//        if (!$order) {
+
         $order = Order::create(
             [
                 'user_id' => $user_id,

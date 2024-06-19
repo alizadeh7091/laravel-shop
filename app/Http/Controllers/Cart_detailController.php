@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Cart_detail;
-use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class Cart_detailController extends Controller
 {
@@ -33,25 +33,39 @@ class Cart_detailController extends Controller
 
     public function allCartItems()
     {
-        $user_id = getUserId();
-        $cart = Cart::where('user_id', $user_id)->first();
-//        dd($cart);
-//        foreach ($cart as $item) {
-//            $newcart = $item;
-//        }
-////        dd($newcart);
-        $cart_items = Cart_detail::where('cart_id', $cart->id)->get();
-        $total_price_sum = 0;
-        foreach ($cart_items as $cart_item) {
-            $total_price_sum += $cart_item->amount;
-        }
+        if (Auth::check()) {
+            $user_id = getUserId();
+            $cart = Cart::where('user_id', $user_id)->first();
+            $cart_items = Cart_detail::where('cart_id', $cart->id)->get();
+            $total_price_sum = 0;
+            foreach ($cart_items as $cart_item) {
+                $total_price_sum += $cart_item->amount;
+            }
 //        dd($total_price_sum);
-        return view('cart.all')->with(
-            [
-                'cart_items' => $cart_items,
-                'total_price_sum' => $total_price_sum,
-            ]
-        );
+            return view('cart.all')->with(
+                [
+                    'cart_items' => $cart_items,
+                    'total_price_sum' => $total_price_sum,
+                ]
+            );
+        } else {
+            $cart = Cookie::get('newCart');
+//            dd($_COOKIE);
+            $cart_items = json_decode($cart);
+//            dd($cart_items[0]);
+            $total_price_sum = 0;
+//            $cart_items['amount'];
+            foreach ($cart_items as $_cart_item){
+                $total_price_sum += $_cart_item->amount;
+            }
+            return view('cart.all')->with(
+                [
+                    'cart_items' => $cart_items,
+                    'total_price_sum' => $total_price_sum,
+                ]
+            );
+        }
+
     }
 
     public function deleteCartItem(Request $request)
@@ -63,38 +77,4 @@ class Cart_detailController extends Controller
         $cart_detail_item->delete();
         return redirect()->back();
     }
-
-//    public function applyDiscount(Request $request)
-//    {
-//        $validated = $request->validate([
-//            'discount_code' => 'required|string|max:255',
-//        ]);
-//        $user_id = getUserId();
-//        $cart = Cart::where('user_id', $user_id)->first();
-//        $discount_code = $request->input('discount_code');
-//        $discount = Discount::query()->where('code', $discount_code)->first();
-////        dd($discount);
-//        $discount_amount = $discount->discount_amount;
-////        return $discount_amount;
-//        $cart_items = Cart_detail::where('cart_id', $cart->id)->get();
-//        $total_price_sum = 0;
-//        foreach ($cart_items as $cart_item) {
-//            $total_price_sum += $cart_item->amount;
-//        }
-//        $total_invoice_discounted = $total_price_sum - ($total_price_sum * ($discount_amount / 100));
-////        return $total_invoice;
-//        $attr =
-//            [
-//                'discount' => $discount_amount,
-//                'total_invoice' => $total_price_sum,
-//                'total_invoice_discounted' => $total_invoice_discounted
-//            ];
-//        $cart->update($attr);
-//        return response()->json
-//        ([
-//            'message' => 'discount code submitted successfully',
-//            'data' => $validated,
-//            'total_with_discount' => $total_invoice_discounted
-//        ]);
-//    }
 }

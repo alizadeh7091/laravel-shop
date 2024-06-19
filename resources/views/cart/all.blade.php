@@ -131,16 +131,17 @@
         </tr>
         </thead>
         <tbody>
+
         @foreach($cart_items as $_cart_item)
             <tr>
-                <td>{{$_cart_item->name}}</td>
+                <td>{{null}}</td>
                 <td>{{$_cart_item->price}}</td>
                 <td>{{$_cart_item->quantity}}</td>
                 <td>{{$_cart_item->amount}}</td>
                 <td>
-                    <form action="{{route('delete.cart.item',$_cart_item->id)}}" method="post">
+                    <form action="{{route('delete.cart.item',$_cart_item->product_id)}}" method="post">
                         @csrf
-                        <input type="hidden" value="{{$_cart_item->id}}" name="id">
+                        <input type="hidden" value="{{$_cart_item->product_id}}" name="id">
                         <button class="order-button">delete</button>
                     </form>
                 </td>
