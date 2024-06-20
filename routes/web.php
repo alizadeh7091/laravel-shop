@@ -5,6 +5,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +40,13 @@ Route::prefix('cart_detail')->group(function () {
 Route::middleware('auth')->prefix('order')->group(function () {
     Route::post('/add', [OrderController::class, 'addOrder'])->name('add.order');
 });
+
+Route::get('/create-post',[PostController::class,'createPost'])->name('create.post');
+Route::post('/create-post',[PostController::class,'insertPost'])->name('insert.post');
+Route::get('/all-post',[PostController::class,'allPost'])->name('all.post');
+Route::post('delete_post/{id}',[PostController::class,'deletePost'])->name('delete.post');
+Route::get('/edit-post/{id}',[PostController::class,'editPost'])->name('edit.post');
+Route::put('/update-post/{id}',[PostController::class,'updatePost'])->name('update.post');
 
 
 require __DIR__ . '/auth.php';
