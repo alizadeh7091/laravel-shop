@@ -11,23 +11,16 @@ class Post extends Model
 
     protected $fillable =
         [
-<<<<<<< HEAD
             'user_id', 'title', 'content', 'image'
-=======
-            'user_id', 'title', 'content','image'
->>>>>>> origin/master
         ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-<<<<<<< HEAD
 
     public function comment()
     {
         return $this->hasMany(Comment::class);
     }
-=======
->>>>>>> origin/master
 }
