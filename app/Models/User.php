@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,7 +17,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'role_id',
         'name',
         'family',
         'email',
@@ -47,24 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
-
     public function carts()
     {
         return $this->hasMany(Order::class);
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 }

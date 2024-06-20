@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\Comment;
+=======
+>>>>>>> origin/master
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Http;
 
 class PostController extends Controller
@@ -29,6 +33,14 @@ class PostController extends Controller
         if (Auth::check()) {
             return view('panel.createpost');
         }
+=======
+
+class PostController extends Controller
+{
+    public function createPost()
+    {
+        return view('panel.createpost');
+>>>>>>> origin/master
     }
 
     public function allPost()
@@ -66,6 +78,7 @@ class PostController extends Controller
 
     public function deletePost($id)
     {
+<<<<<<< HEAD
         if (Auth::check()) {
             $user_id = getUserId();
             $user = User::query()->findOrFail($user_id);
@@ -75,10 +88,16 @@ class PostController extends Controller
                 return redirect()->route('all.post');
             }
         }
+=======
+        $post = Post::query()->findOrFail($id);
+        $post->delete();
+        return redirect()->route('all.post');
+>>>>>>> origin/master
     }
 
     public function editPost($id)
     {
+<<<<<<< HEAD
         if (Auth::check()) {
             $user_id = getUserId();
             $user = User::query()->findOrFail($user_id);
@@ -91,10 +110,20 @@ class PostController extends Controller
                 );
             }
         }
+=======
+        $post = Post::query()->findOrFail($id);
+//        dd($post);
+        return view('panel.editpost')->with(
+            [
+                'post' => $post,
+            ]
+        );
+>>>>>>> origin/master
     }
 
     public function updatePost(Request $request, $id)
     {
+<<<<<<< HEAD
         if (Auth::check()) {
             $user_id = getUserId();
             $user = User::query()->findOrFail($user_id);
@@ -126,5 +155,16 @@ class PostController extends Controller
                 ]
             );
         }
+=======
+        $post = Post::query()->findOrFail($id);
+        $title = $request['title'];
+        $content = $request['content'];
+        $attr = [
+            'title' => $title,
+            'content' => $content,
+        ];
+        $post->update($attr);
+        return redirect()->route('all.post');
+>>>>>>> origin/master
     }
 }

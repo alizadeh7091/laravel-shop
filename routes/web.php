@@ -5,10 +5,6 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\CommentController;
-
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,16 +39,5 @@ Route::middleware('auth')->prefix('order')->group(function () {
     Route::post('/add', [OrderController::class, 'addOrder'])->name('add.order');
 });
 
-Route::prefix('post')->group(function () {
-    Route::get('/create',[PostController::class,'createPost'])->name('create.post');
-    Route::post('/create',[PostController::class,'insertPost'])->name('insert.post');
-    Route::get('/show/{id}',[PostController::class,'showPost'])->name('show.post');
-    Route::get('/all',[PostController::class,'allPost'])->name('all.post');
-    Route::post('delete/{id}',[PostController::class,'deletePost'])->name('delete.post');
-    Route::get('/edit/{id}',[PostController::class,'editPost'])->name('edit.post');
-    Route::put('/update/{id}',[PostController::class,'updatePost'])->name('update.post');
-});
-
-Route::post('comment/create/{id}',[CommentController::class,'insertComment'])->name('insert.comment');
 
 require __DIR__ . '/auth.php';
