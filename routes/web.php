@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TestController;
+use App\Http\Middleware\CanViewPosts;
 
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,7 @@ Route::middleware('auth')->prefix('order')->group(function () {
 Route::prefix('post')->group(function () {
     Route::get('/create', [PostController::class, 'createPost'])->name('create.post');
     Route::post('/create', [PostController::class, 'insertPost'])->name('insert.post');
-    Route::get('/all', [PostController::class, 'allPost'])->name('all.post');
+    Route::get('/all', [PostController::class, 'allPost'])->middleware(CanViewPosts::class)->name('all.post');
     Route::post('delete/{id}', [PostController::class, 'deletePost'])->name('delete.post');
     Route::get('/edit/{id}', [PostController::class, 'editPost'])->name('edit.post');
     Route::put('/update/{id}', [PostController::class, 'updatePost'])->name('update.post');
