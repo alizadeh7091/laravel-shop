@@ -3,9 +3,11 @@
 use App\Http\Controllers\Cart_detailController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TestController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -42,13 +44,17 @@ Route::middleware('auth')->prefix('order')->group(function () {
 });
 
 Route::prefix('post')->group(function () {
-    Route::get('/create',[PostController::class,'createPost'])->name('create.post');
-    Route::post('/create',[PostController::class,'insertPost'])->name('insert.post');
-    Route::get('/all',[PostController::class,'allPost'])->name('all.post');
-    Route::post('delete/{id}',[PostController::class,'deletePost'])->name('delete.post');
-    Route::get('/edit/{id}',[PostController::class,'editPost'])->name('edit.post');
-    Route::put('/update/{id}',[PostController::class,'updatePost'])->name('update.post');
-    Route::get('/show',[PostController::class,'showPost'])->name('show.post');
+    Route::get('/create', [PostController::class, 'createPost'])->name('create.post');
+    Route::post('/create', [PostController::class, 'insertPost'])->name('insert.post');
+    Route::get('/all', [PostController::class, 'allPost'])->name('all.post');
+    Route::post('delete/{id}', [PostController::class, 'deletePost'])->name('delete.post');
+    Route::get('/edit/{id}', [PostController::class, 'editPost'])->name('edit.post');
+    Route::put('/update/{id}', [PostController::class, 'updatePost'])->name('update.post');
+    Route::get('/show/{id}', [PostController::class, 'showPost'])->name('show.post');
 });
+
+Route::post('/insert-comment',[CommentController::class,'insertComment'])->name('insert.comment');
+
+Route::get('/test',[TestController::class,'testLog']);
 
 require __DIR__ . '/auth.php';

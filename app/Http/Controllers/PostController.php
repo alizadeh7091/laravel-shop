@@ -7,7 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -114,17 +114,25 @@ class PostController extends Controller
 
     public function insertPosts()
     {
-        $response = Http::get('https://jsonplaceholder.typicode.com/posts');
-//        dd($response);
-        $posts = $response->json();
-        foreach ($posts as $_post) {
-            Post::query()->create(
-                [
-                    'user_id' => $_post['userId'],
-                    'title' => $_post['title'],
-                    'content' => $_post['body']
-                ]
-            );
+        try {
+            $response = Http::get('https://jsonplaceholder.typicode.com/posts');
+//            $response = Post::query()->findOrFail(2000000);
+//            dd($response);
+            $posts = $response->json();
+            foreach ($posts as $_post) {
+                Post::query()->create(
+                    [
+                        'user_id' => $_post['userId'],
+                        'title' => $_post['title'],
+                        'content' => $_post['body']
+                    ]
+                );
+            }
+        } catch (\Exception $exception) {
+            Log::error('Error inserting posts ' . $exception->getMessage());
+            return \response()->json(['massage' => 'failed to insert posts'], 500);
         }
+
+
     }
 }

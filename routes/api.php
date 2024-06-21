@@ -5,4 +5,4 @@ use App\Http\Controllers\PostController;
 
 
 Route::post('/applyDiscount', [DiscountController::class, 'applyDiscount'])->name('apply.discount');
-Route::get('/api/post-insert',[PostController::class,'insertPosts']);
+Route::get('/post-insert',[PostController::class,'insertPosts']);
